@@ -7,7 +7,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use RuntimeException;
+use Throwable;
 
 class EmailListController extends Controller
 {
@@ -23,6 +25,9 @@ class EmailListController extends Controller
         return view('email-list.create');
     }
 
+    /**
+     * @throws Throwable
+     */
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
@@ -32,28 +37,15 @@ class EmailListController extends Controller
 
         /** @var UploadedFile $file */
         $file = $request->file('file');
-        $fileHandle = fopen(filename: $file->getRealPath(), mode: 'r');
-        if ($fileHandle === false) {
-            throw new RuntimeException('Erro na leitura do CSV');
-        }
+        $emails = $this->getEmailsFromCsvFile($file->getRealPath());
 
-        $items = [];
+        DB::transaction(function () use ($data, $emails) {
+            $emailList = EmailList::query()->create([
+                'title' => $data['title']
+            ]);
 
-        while (($row = fgetcsv($fileHandle)) !== false) {
-            if ($row[0] === 'Name' && $row[1] === 'Email') {
-                continue;
-            }
-
-            $items[] = [
-                'name' => $row[0],
-                'email' => $row[1]
-            ];
-        }
-
-        $emailList = EmailList::query()->create([
-            'title' => $data['title']
-        ]);
-        $emailList->subscribers()->createMany($items);
+            $emailList->subscribers()->createMany($emails);
+        });
 
         return to_route('email-list.index');
     }
@@ -88,5 +80,28 @@ class EmailListController extends Controller
     public function destroy(EmailList $list)
     {
         //
+    }
+
+    private function getEmailsFromCsvFile(string $filename): array
+    {
+        $fileHandle = fopen(filename: $filename, mode: 'r');
+        if ($fileHandle === false) {
+            throw new RuntimeException('Erro na leitura do CSV');
+        }
+
+        $items = [];
+
+        while (($row = fgetcsv($fileHandle)) !== false) {
+            if ($row[0] === 'Name' && $row[1] === 'Email') {
+                continue;
+            }
+
+            $items[] = [
+                'name' => $row[0],
+                'email' => $row[1]
+            ];
+        }
+
+        return $items;
     }
 }
