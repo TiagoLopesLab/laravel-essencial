@@ -5,8 +5,17 @@
         </x-h2>
     </x-slot>
 
-    <x-card>
-        @unless($emailLists->isEmpty())
+    <x-card class="flex flex-col gap-8">
+        <div class="flex justify-between">
+            <x-link-button :href="route('email-list.create')">
+                {{ __('Create a new Email List') }}
+            </x-link-button>
+
+            <x-form :action="route('email-list.index')" :post="false" class="w-2/5">
+                <x-text-input name="search" id="search" :placeholder="__('Search')" :value="$search" />
+            </x-form>
+        </div>
+        @unless($emailLists->isEmpty() && blank($search))
             <x-table :headers="['#', __('Title'), __('Quantity'), __('Actions')]">
                 @foreach($emailLists as $emailList)
                     <tr>
@@ -20,6 +29,8 @@
                     </tr>
                 @endforeach
             </x-table>
+
+            {{ $emailLists->links() }}
         @else
             <div class="flex justify-center">
                 <x-link-button :href="route('email-list.create')">

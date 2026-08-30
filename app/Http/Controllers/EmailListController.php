@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EmailList;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -15,8 +16,17 @@ class EmailListController extends Controller
 {
     public function index(): View
     {
+        $search = request()->search ?? '';
+        $emailLists = EmailList::query()
+            ->when($search !== '', function (Builder $query) use ($search) {
+                $query->whereLike('title',"%$search%");
+        })
+            ->paginate(5)
+            ->appends(compact('search'));
+
         return view('email-list.index', [
-            'emailLists' => EmailList::query()->paginate()
+            'emailLists' => $emailLists,
+            'search' => $search
         ]);
     }
 

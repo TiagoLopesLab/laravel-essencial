@@ -7,7 +7,9 @@
 @endphp
 
 <form {{ $attributes->class(['flex flex-col gap-4']) }} method="{{ $method }}">
-    @csrf
+    @if($method === 'POST')
+        @csrf
+    @endif
 
     {{ $slot }}
 </form>

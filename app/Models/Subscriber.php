@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Subscriber extends Model
 {
+    use HasFactory;
+
     public function emailList(): BelongsTo
     {
         return $this->belongsTo(EmailList::class);
