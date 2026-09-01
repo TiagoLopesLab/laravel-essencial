@@ -18,6 +18,7 @@ class EmailListController extends Controller
     {
         $search = request()->search ?? '';
         $emailLists = EmailList::query()
+            ->withCount('subscribers')
             ->when($search !== '', function (Builder $query) use ($search) {
                 $query->whereLike('title',"%$search%");
         })

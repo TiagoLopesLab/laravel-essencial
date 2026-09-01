@@ -21,7 +21,7 @@
                     <tr>
                         <x-table.td>{{ $emailList->id }}</x-table.td>
                         <x-table.td>{{ $emailList->title }}</x-table.td>
-                        <x-table.td>{{ $emailList->subscribers()->count() }}</x-table.td>
+                        <x-table.td>{{ $emailList->subscribers_count }}</x-table.td>
                         <x-table.td>
                             <x-primary-button type="button">{{ __('Update') }}</x-primary-button>
                             <x-secondary-button type="button">{{ __('Delete') }}</x-secondary-button>
