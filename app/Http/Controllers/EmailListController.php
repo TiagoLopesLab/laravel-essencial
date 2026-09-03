@@ -21,7 +21,7 @@ class EmailListController extends Controller
             ->withCount('subscribers')
             ->when($search !== '', function (Builder $query) use ($search) {
                 $query->whereLike('title',"%$search%");
-        })
+            })
             ->paginate(5)
             ->appends(compact('search'));
 

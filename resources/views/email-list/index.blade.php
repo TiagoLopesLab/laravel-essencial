@@ -23,8 +23,9 @@
                         <x-table.td>{{ $emailList->title }}</x-table.td>
                         <x-table.td>{{ $emailList->subscribers_count }}</x-table.td>
                         <x-table.td>
-                            <x-primary-button type="button">{{ __('Update') }}</x-primary-button>
-                            <x-secondary-button type="button">{{ __('Delete') }}</x-secondary-button>
+                            <x-link-button :href="route('subscribers.index', $emailList)">
+                                {{ __('View Subscribers') }}
+                            </x-link-button>
                         </x-table.td>
                     </tr>
                 @endforeach
