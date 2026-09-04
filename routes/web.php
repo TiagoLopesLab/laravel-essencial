@@ -26,10 +26,11 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/email-list', EmailListController::class);
 
-    Route::get('/email-list/{emailList}/subscribers', [SubscriberController::class, 'index'])
-        ->name('subscribers.index');
-    Route::get('/email-list/{emailList}/subscribers/create', [SubscriberController::class, 'create'])
-        ->name('subscribers.create');
+    Route::prefix('/email-list/{emailList}/subscribers')->group(function () {
+        Route::get('/', [SubscriberController::class, 'index'])->name('subscribers.index');
+        Route::get('/create', [SubscriberController::class, 'create'])->name('subscribers.create');
+        Route::delete('/{subscriber}', [SubscriberController::class, 'destroy'])->name('subscriber.destroy');
+    });
 });
 
 require __DIR__.'/auth.php';

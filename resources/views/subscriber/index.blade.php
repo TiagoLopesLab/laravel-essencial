@@ -11,7 +11,19 @@
                 {{ __('Create a new Subscriber') }}
             </x-link-button>
 
-            <x-form :action="route('subscribers.index', $emailList)" :post="false" class="w-2/5">
+            <x-form :action="route('subscribers.index', $emailList)" method="get" class="w-2/5" x-data x-ref="form">
+                <label for="show_trash" class="inline-flex items-center">
+                    <input
+                        type="checkbox"
+                        id="show_trash"
+                        name="show_trash"
+                        value="1"
+                        class="rounded bg-gray-900"
+                        @click="$refs.form.submit()"
+                        @if ($showTrash) checked @endif
+                    >
+                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">Show deleted records</span>
+                </label>
                 <x-text-input name="search" id="search" :placeholder="__('Search')" :value="$search" />
             </x-form>
         </div>
@@ -22,8 +34,11 @@
                     <x-table.td>{{ $subscriber->name }}</x-table.td>
                     <x-table.td>{{ $subscriber->email }}</x-table.td>
                     <x-table.td>
-                        <x-primary-button type="button">{{ __('Update') }}</x-primary-button>
-                        <x-secondary-button type="button">{{ __('Delete') }}</x-secondary-button>
+                        <x-form method="delete" :action="route('subscriber.destroy', [$emailList, $subscriber])">
+                            <x-secondary-button type="submit" class="w-fit" :disabled="$subscriber->trashed()">
+                                {{ __('Delete') }}
+                            </x-secondary-button>
+                        </x-form>
                     </x-table.td>
                 </tr>
             @endforeach
