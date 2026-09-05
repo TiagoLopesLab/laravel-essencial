@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/email-list/{emailList}/subscribers')->group(function () {
         Route::get('/', [SubscriberController::class, 'index'])->name('subscribers.index');
         Route::get('/create', [SubscriberController::class, 'create'])->name('subscribers.create');
+        Route::post('/create', [SubscriberController::class, 'store'])->name('subscribers.store');
         Route::delete('/{subscriber}', [SubscriberController::class, 'destroy'])->name('subscriber.destroy');
     });
 });
