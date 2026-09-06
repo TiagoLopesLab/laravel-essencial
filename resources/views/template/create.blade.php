@@ -1,12 +1,12 @@
 <x-layouts.app>
     <x-slot:header>
         <x-h2>
-            {{ __('Email List') }} > {{ $emailList->title }} > {{ __('Create new subscriber') }}
+            {{ __('Create new template') }}
         </x-h2>
     </x-slot:header>
 
     <x-card>
-        <x-form :action="route('subscribers.store', $emailList)">
+        <x-form :action="route('templates.store')">
             <div class="space-y-4">
                 <div>
                     <x-input.label for="name" :value="__('Name')" />
@@ -15,14 +15,14 @@
                 </div>
 
                 <div>
-                    <x-input.label for="email" :value="__('Email')" />
-                    <x-input.text name="email" id="email" type="email" class="block mt-1 w-full" />
-                    <x-input.error :messages="$errors->get('email')" class="mt-2" />
+                    <x-input.label for="body" :value="__('Body')" />
+                    <x-input.text name="body" id="body" class="block mt-1 w-full" />
+                    <x-input.error :messages="$errors->get('body')" class="mt-2" />
                 </div>
             </div>
 
             <div class="flex items-center gap-4">
-                <x-button.link :href="route('subscribers.index', $emailList)">
+                <x-button.link :href="route('templates.index')">
                     {{ __('Cancel') }}
                 </x-button.link>
 

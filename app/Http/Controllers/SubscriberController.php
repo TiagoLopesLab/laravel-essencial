@@ -29,7 +29,8 @@ class SubscriberController extends Controller
                 });
             })
             ->orderBy('id')
-            ->paginate(20);
+            ->paginate(20)
+            ->appends(compact('search'));
 
         return view(
             'subscriber.index',

@@ -3,6 +3,7 @@
 use App\Http\Controllers\EmailListController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriberController;
+use App\Http\Controllers\TemplateController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/create', [SubscriberController::class, 'store'])->name('subscribers.store');
         Route::delete('/{subscriber}', [SubscriberController::class, 'destroy'])->name('subscriber.destroy');
     });
+
+    Route::resource('/templates', TemplateController::class);
 });
 
 require __DIR__.'/auth.php';
