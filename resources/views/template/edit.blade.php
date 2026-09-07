@@ -16,7 +16,7 @@
 
                 <div>
                     <x-input.label for="body" :value="__('Body')" />
-                    <x-input.text name="body" id="body" class="block mt-1 w-full" :value="old('body', $template->body)" />
+                    <x-input.richtext name="body" :value="old('body', $template->body)" />
                     <x-input.error :messages="$errors->get('body')" class="mt-2" />
                 </div>
             </div>
