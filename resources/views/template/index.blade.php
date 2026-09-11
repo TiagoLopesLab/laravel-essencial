@@ -29,6 +29,9 @@
                         <x-table.td>{{ $template->id }}</x-table.td>
                         <x-table.td>{{ $template->name }}</x-table.td>
                         <x-table.td class="flex gap-4">
+                            <x-button.link :href="route('templates.show', $template)">
+                                {{ __('Preview') }}
+                            </x-button.link>
                             <x-button.link :href="route('templates.edit', $template)">
                                 {{ __('Edit') }}
                             </x-button.link>

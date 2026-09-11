@@ -54,6 +54,13 @@ class TemplateController extends Controller
             ->with('message', __('Template created!'));
     }
 
+    public function show(Template $template): View
+    {
+        return view('template.show', [
+            'template' => $template
+        ]);
+    }
+
     public function edit(Template $template): View
     {
         return view('template.edit', [
