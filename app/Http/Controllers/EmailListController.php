@@ -61,38 +61,6 @@ class EmailListController extends Controller
         return to_route('email-list.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(EmailList $list)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(EmailList $list)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, EmailList $list)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(EmailList $list)
-    {
-        //
-    }
-
     private function getEmailsFromCsvFile(string $filename): array
     {
         $fileHandle = fopen(filename: $filename, mode: 'r');

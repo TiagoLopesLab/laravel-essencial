@@ -27,7 +27,10 @@ class TemplateController extends Controller
             })
             ->orderBy('id')
             ->paginate(5)
-            ->appends(compact('search'));
+            ->appends([
+                'search' => $search,
+                'show_trash' => $showTrash
+            ]);
 
         return view('template.index', [
             'templates' => $templates,

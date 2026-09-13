@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\EmailListController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriberController;
@@ -25,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('/email-list', EmailListController::class);
+    Route::resource('/email-list', EmailListController::class)->only(['index', 'create', 'store']);
 
     Route::prefix('/email-list/{emailList}/subscribers')->group(function () {
         Route::get('/', [SubscriberController::class, 'index'])->name('subscribers.index');
@@ -35,6 +36,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::resource('/templates', TemplateController::class);
+    Route::resource('/campaigns', CampaignController::class)->only(['index', 'create', 'destroy']);
 });
 
 require __DIR__.'/auth.php';

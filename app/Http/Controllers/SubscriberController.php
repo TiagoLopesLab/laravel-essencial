@@ -30,7 +30,10 @@ class SubscriberController extends Controller
             })
             ->orderBy('id')
             ->paginate(20)
-            ->appends(compact('search'));
+            ->appends([
+                'search' => $search,
+                'show_trash' => $showTrash
+            ]);
 
         return view(
             'subscriber.index',
