@@ -50,4 +50,12 @@ class CampaignController extends Controller
         return to_route('campaigns.index')
             ->with('message', __('Campaign deleted!'));
     }
+
+    public function restore(Campaign $campaign): RedirectResponse
+    {
+        $campaign->restore();
+
+        return to_route('campaigns.index')
+            ->with('message', __('Campaign restored!'));
+    }
 }

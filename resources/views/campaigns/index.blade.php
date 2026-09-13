@@ -29,11 +29,19 @@
                         <x-table.td>{{ $campaign->id }}</x-table.td>
                         <x-table.td>{{ $campaign->name }}</x-table.td>
                         <x-table.td class="flex gap-4">
-                            <x-form method="delete" :action="route('campaigns.destroy', $campaign)">
-                                <x-button.secondary type="submit" class="w-fit" :disabled="$campaign->trashed()">
-                                    {{ __('Delete') }}
-                                </x-button.secondary>
-                            </x-form>
+                                @unless($campaign->trashed())
+                                    <x-form method="delete" :action="route('campaigns.destroy', $campaign)">
+                                        <x-button.secondary type="submit" class="w-fit">
+                                            {{ __('Delete') }}
+                                        </x-button.secondary>
+                                    </x-form>
+                                @else
+                                    <x-form method="patch" :action="route('campaigns.restore', $campaign)">
+                                        <x-button.secondary type="submit" class="w-fit">
+                                            {{ __('Restore') }}
+                                        </x-button.secondary>
+                                    </x-form>
+                                @endif
                         </x-table.td>
                     </tr>
                 @endforeach

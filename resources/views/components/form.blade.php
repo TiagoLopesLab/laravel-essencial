@@ -4,7 +4,7 @@
 
 @php
     $method = strtoupper($method);
-    if (!in_array($method, ['GET', 'POST', 'DELETE', 'PUT'])) {
+    if (!in_array($method, ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'])) {
         $method = 'POST';
     }
     $formMethod = $method === 'GET' ? 'GET' : 'POST';
