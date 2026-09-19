@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::resource('/templates', TemplateController::class);
-    Route::resource('/campaigns', CampaignController::class)->only(['index', 'create', 'destroy']);
+    Route::resource('/campaigns', CampaignController::class)->only(['index', 'create', 'store', 'destroy']);
     Route::patch('/campaigns/{campaign}/restore', [CampaignController::class, 'restore'])
         ->withTrashed()
         ->name('campaigns.restore');
