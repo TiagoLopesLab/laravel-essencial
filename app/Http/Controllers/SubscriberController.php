@@ -32,7 +32,7 @@ class SubscriberController extends Controller
             ->paginate(20)
             ->appends([
                 'search' => $search,
-                'show_trash' => $showTrash
+                'show_trash' => $showTrash,
             ]);
 
         return view(
@@ -44,7 +44,7 @@ class SubscriberController extends Controller
     public function create(EmailList $emailList): View
     {
         return view('subscriber.create', [
-            'emailList' => $emailList
+            'emailList' => $emailList,
         ]);
     }
 
@@ -52,7 +52,7 @@ class SubscriberController extends Controller
     {
         $data = request()->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('subscribers')->where('email_list_id', $emailList->id)]
+            'email' => ['required', 'email', 'max:255', Rule::unique('subscribers')->where('email_list_id', $emailList->id)],
         ]);
 
         $emailList->subscribers()->create($data);

@@ -14,7 +14,7 @@ class TemplateFactory extends Factory
     {
         return [
             'name' => fake()->words(3, true),
-            'body' => fake()->randomHtml
+            'body' => fake()->randomHtml,
         ];
     }
 }

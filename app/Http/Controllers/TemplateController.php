@@ -29,13 +29,13 @@ class TemplateController extends Controller
             ->paginate(5)
             ->appends([
                 'search' => $search,
-                'show_trash' => $showTrash
+                'show_trash' => $showTrash,
             ]);
 
         return view('template.index', [
             'templates' => $templates,
             'search' => $search,
-            'showTrash' => $showTrash
+            'showTrash' => $showTrash,
         ]);
     }
 
@@ -48,7 +48,7 @@ class TemplateController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string']
+            'body' => ['required', 'string'],
         ]);
 
         Template::query()->create($data);
@@ -60,14 +60,14 @@ class TemplateController extends Controller
     public function show(Template $template): View
     {
         return view('template.show', [
-            'template' => $template
+            'template' => $template,
         ]);
     }
 
     public function edit(Template $template): View
     {
         return view('template.edit', [
-            'template' => $template
+            'template' => $template,
         ]);
     }
 
@@ -75,7 +75,7 @@ class TemplateController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string']
+            'body' => ['required', 'string'],
         ]);
 
         $template->update($data);

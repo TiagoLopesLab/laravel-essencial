@@ -75,7 +75,8 @@
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
-        ]
+        ],
+        "lint": "pint"
     },
     "extra": {
         "laravel": {

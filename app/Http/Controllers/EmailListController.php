@@ -20,14 +20,14 @@ class EmailListController extends Controller
         $emailLists = EmailList::query()
             ->withCount('subscribers')
             ->when($search !== '', function (Builder $query) use ($search) {
-                $query->whereLike('title',"%$search%");
+                $query->whereLike('title', "%$search%");
             })
             ->paginate(5)
             ->appends(compact('search'));
 
         return view('email-list.index', [
             'emailLists' => $emailLists,
-            'search' => $search
+            'search' => $search,
         ]);
     }
 
@@ -43,7 +43,7 @@ class EmailListController extends Controller
     {
         $data = $request->validate([
             'title' => ['required', 'max:255'],
-            'file' => ['required', 'file', 'mimes:csv']
+            'file' => ['required', 'file', 'mimes:csv'],
         ]);
 
         /** @var UploadedFile $file */
@@ -52,7 +52,7 @@ class EmailListController extends Controller
 
         DB::transaction(function () use ($data, $emails) {
             $emailList = EmailList::query()->create([
-                'title' => $data['title']
+                'title' => $data['title'],
             ]);
 
             $emailList->subscribers()->createMany($emails);
@@ -77,7 +77,7 @@ class EmailListController extends Controller
 
             $items[] = [
                 'name' => $row[0],
-                'email' => $row[1]
+                'email' => $row[1],
             ];
         }
 

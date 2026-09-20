@@ -19,7 +19,7 @@ class SubscriberFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'email' => fake()->email()
+            'email' => fake()->email(),
         ];
     }
 }

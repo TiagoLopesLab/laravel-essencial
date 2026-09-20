@@ -18,7 +18,7 @@ class EmailListFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->word()
+            'title' => fake()->word(),
         ];
     }
 }
