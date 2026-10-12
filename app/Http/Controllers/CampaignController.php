@@ -6,6 +6,7 @@ use App\Models\Campaign;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
+use InvalidArgumentException;
 
 class CampaignController extends Controller
 {
@@ -46,29 +47,85 @@ class CampaignController extends Controller
             'schedule' => '_schedule',
             default => '_config'
         };
+        $data = session()->get('campaigns::create', [
+            'name' =>  null,
+            'subject' =>  null,
+            'email_list_id' => null,
+            'template_id' => null,
+            'body' => null,
+            'track_click' => null,
+            'track_open' => null,
+            'sent_at' => null
+        ]);
 
-        return view('campaigns.create', compact('tab', 'form'));
+        return view('campaigns.create', compact('tab', 'form', 'data'));
     }
 
     public function store(): RedirectResponse
     {
         $tab = request()->input('tab', '');
 
+        $toRoute = null;
+
+        $map = array_merge([
+            'name' =>  null,
+            'subject' =>  null,
+            'email_list_id' => null,
+            'template_id' => null,
+            'body' => null,
+            'track_click' => null,
+            'track_open' => null,
+            'sent_at' => null
+        ], request()->all());
+
         if (blank($tab)) {
-            $data = request()->validate([
+            request()->validate([
                 'name' => ['required', 'max:255'],
                 'subject' => ['required', 'max:40'],
                 'email_list_id' => ['nullable'],
                 'template_id' => ['nullable'],
+                'body' => ['nullable'],
+                'track_click' => ['nullable'],
+                'track_open' => ['nullable'],
+                'sent_at' => ['nullable']
             ]);
 
-            session()->put('campaigns::create', $data);
-
-            return to_route('campaigns.create', ['tab' => 'template']);
+            $toRoute = route('campaigns.create', ['tab' => 'template']);
         }
 
-        return to_route('campaigns.index')
-            ->with('message', __('Campaign created!'));
+        if ($tab === 'template') {
+            request()->validate([
+                'body' => ['required'],
+            ]);
+
+            $toRoute = route('campaigns.create', ['tab' => 'schedule']);
+        }
+
+        if ($tab === 'schedule') {
+            request()->validate([
+                'sent_at' => ['required', 'date'],
+            ]);
+
+            $toRoute = route('campaigns.index');
+        }
+
+        if ($toRoute === null) {
+            throw new InvalidArgumentException('Invalid Tab');
+        }
+
+        $session = session('campaigns::create');
+
+        foreach($session as $key => $value) {
+            $newValue = data_get($map, $key);
+
+            if (filled($newValue)) {
+                $session[$key] = $newValue;
+            }
+        }
+
+        session()->put('campaigns::create', $session);
+
+        return response()->redirectTo($toRoute);
     }
 
     public function destroy(Campaign $campaign): RedirectResponse
